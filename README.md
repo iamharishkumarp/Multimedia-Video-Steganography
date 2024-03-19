@@ -1,6 +1,6 @@
-# Multimedia-Steganography Using Hybrid Encryption
+# Multimedia-Video-Steganography Using Hybrid Encryption
 
-## Introduction
+## Introduction 
 
 Multimedia-Steganography Using Hybrid Encryption is a project that enables users to hide multiple files inside a video file using a hybrid encryption scheme combining features of AES and RSA algorithms. LSB Method is used in this project. The project facilitates the encryption of files, embedding them seamlessly within a video, and decrypting them from the encrypted video.
 
@@ -19,7 +19,7 @@ To install and run the project locally, follow these steps:
 
 2. Navigate to the project directory:
 
-    cd Multimedia-Steganography
+    cd Multimedia-Video-Steganography
 
 3. Install the required dependencies:
 
@@ -29,4 +29,4 @@ To install and run the project locally, follow these steps:
 
     python app.py
 
-5. After generating your private key, you can securely download it or share it with others via email.
+5. Encrypt after generating keys.

@@ -14,8 +14,6 @@ import Keys as k
 import Email_KEY as mail
 
 
-
-
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'mysecretkey'
 app.config['VIDEO_FOLDER'] = './Video/'
