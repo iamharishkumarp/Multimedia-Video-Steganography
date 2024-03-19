@@ -1,8 +1,7 @@
-import shutil
 from flask import Flask, render_template, send_file, session
 import os
 from flask_wtf import FlaskForm
-from wtforms import EmailField, FileField, SubmitField, MultipleFileField, RadioField
+from wtforms import EmailField, FileField, SelectField, SubmitField, MultipleFileField
 from werkzeug.utils import secure_filename
 from wtforms.validators import InputRequired
 import decoding as vd
@@ -12,6 +11,8 @@ import zipfile
 from wtforms.validators import InputRequired
 import Keys as k
 import Email_KEY as mail
+
+
 
 
 app = Flask(__name__)
@@ -26,7 +27,6 @@ app.config['SESSION_TYPE'] = 'filesystem'
 app.config['SESSION_PERMANENT'] = False
 app.config['SESSION_USE_SIGNER'] = True
 
-
 class DecryptForm(FlaskForm):
     evideo = FileField("Decrypt Video", validators=[InputRequired()], render_kw={'style': 'padding: 10px; border: 2px solid black; background-color: none; color: #333; border-radius: 5px; font-size: 16px;'})
     Private_KEY = FileField("Private Key", validators=[InputRequired()], render_kw={'style': 'padding: 10px; border: 2px solid black; background-color: none; color: #333; border-radius: 5px; font-size: 16px;'})
@@ -34,6 +34,7 @@ class DecryptForm(FlaskForm):
 
 class VideoForm(FlaskForm):
     cvideo = FileField("Cover Video", validators=[InputRequired()], render_kw={'style': 'padding: 10px; border: 2px solid black; background-color: none; color: #333; border-radius: 5px; font-size: 16px;'})
+    dropdown = SelectField('Select Option', choices=[('', 'Select Size'),(10, '< 1MB'), (20, '< 1.5MB'), (30, '< 2MB'),(40,'< 2.5MB'),(50,'< 3MB')], validators=[InputRequired()], render_kw={'style': 'padding: 10px; border: 2px solid black; background-color: none; color: #333; border-radius: 5px; font-size: 16px;'})
     submit = SubmitField("Get Video Information")
 
 class EncryptForm(FlaskForm):
@@ -104,7 +105,9 @@ def encrypt():
         video_data = session['video_data']
         v_path = video_data['video_path']
         print(l)
-        ve.call_encrypt(v_path,l,Public_KEY_path)
+        print()
+        
+        ve.call_encrypt(v_path,l,int(video_data['frame_count']),Public_KEY_path)
         
         print(files)
         
@@ -124,16 +127,19 @@ def encrypt():
     if vform.validate_on_submit() and vform.submit.data and not session['video_form_submitted']:
         cover = vform.cvideo.data
         filename = secure_filename(cover.filename)
-        
+        count = int(vform.dropdown.data)
+        print(count)
         cover.save(os.path.join(app.config['VIDEO_FOLDER'], filename))
         video_path = os.path.join(app.config['VIDEO_FOLDER'], filename)
-        frame_number, files_to_embed = v.get_video_info(video_path)
+        frame_number, c = v.get_video_info(video_path,count)
         
+        files_to_embed = ((frame_number-10)//(count+2))
         session['video_form_submitted'] = True
         session['encrypt_form_submitted'] = True
         session['video_data'] = {
             'video_path': video_path,
             'frame_number': frame_number,
+            'frame_count': count,
             'files_to_embed': files_to_embed
         }
         
@@ -204,7 +210,7 @@ def downloadkey():
     return send_file('./Keys/RSA_private.pem', as_attachment=True)
 
 
-# Define route for About us page
+# Define route for About Us page
 @app.route('/about')
 def about():
     return render_template('about.html')

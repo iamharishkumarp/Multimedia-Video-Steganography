@@ -7,7 +7,7 @@ import decoding as d
 def clean_tmp(path="./tmp"):
     if os.path.exists(path):
         shutil.rmtree(path)
-        print("[INFO] tmp files are cleaned")
+        print("[INFO] tmp files are cleaned up")
 
 # Count the number of frames in the video
 def countFrames(f_name):
@@ -26,7 +26,7 @@ def get_frames(f_name):
     for index, frame in enumerate(video_object.iter_frames()):
         img = Image.fromarray(frame, 'RGB')
         img.save(f'{temp_folder}{index}.png')
-    print("[INFO] All frames are extracted from the video")
+    print("[INFO] All frames are extracted from video")
     video_object.close()
 
 # Function to embed the hidden file into the video
@@ -35,17 +35,17 @@ def new_video(f_name):
     audio_path="tmp\\audio.aac"
     file_ext=f_name.split(".")[-1]
     # Extract audio from the input video
-    os.system(f"ffmpeg_6.3\\bin\\ffmpeg -i {f_name} -vn -acodec copy {audio_path} -y")
+    os.system(f"ffmpeg -i {f_name} -vn -acodec copy {audio_path} -y")
     print("Audio is extracted from video")
     
     capture = cv2.VideoCapture(f_name) # Stores OG Video into a Capture Window
     fps = capture.get(cv2.CAP_PROP_FPS) # Extracts FPS of OG Video
 
     video_path_real = "tmp\\%d.png" # To Get All Frames in Folder
-    os.system(f"ffmpeg_6.3\\bin\\ffmpeg -framerate {fps} -i {video_path_real} -codec copy tmp\\only_video.{file_ext}") # Combining the Frames into a Video
+    os.system(f"ffmpeg -framerate {fps} -i {video_path_real} -codec copy tmp\\only_video.{file_ext}") # Combining the Frames into a Video
     print("Video frames are copied without compression")
     
-    os.system(f"ffmpeg_6.3\\bin\\ffmpeg -i tmp\\only_video.{file_ext} -i {audio_path} -codec copy Output\\video.{file_ext}") # Combining the Frames and Audio into a Video
+    os.system(f"ffmpeg -i tmp\\only_video.{file_ext} -i {audio_path} -codec copy Output\\video.{file_ext}") # Combining the Frames and Audio into a Video
     print('Video is successfully encoded with encrypted text Document')
 
     # Debugging: Check if the hidden file is present in the output directory
@@ -56,13 +56,14 @@ def new_video(f_name):
     clean_tmp()
 
 # Function to get the number of frames in the video
-def get_video_info(f_name):
+def get_video_info(f_name,frame_count):
+    print(frame_count)
+    print(type(frame_count))
     count=countFrames(f_name)
-    frame_count_for_files=15
     print()
     print(f"the number of frames in the video is {count}")
-    print(f"the number of files that can be embedded into the video is : {(count//(frame_count_for_files+2))-1}")
-    return count,frame_count_for_files
+    print(f"the number of files that can be embedded into the video is : {((count-10)//(frame_count+2))}")
+    return count,frame_count
 
 def get_count(folder_path):
     # List all files and directories in the specified folder

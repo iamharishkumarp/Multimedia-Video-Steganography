@@ -22,7 +22,7 @@ def decryption_process(encrypted_data, key, iv):
 # Function to decrypt the files using the AES key 
 def decrypt():
     
-    #Load the AES key
+    #Load AES key
     with open('./Retrived_Files/decrypted_aes_key.txt', 'rb') as f:
         key=f.read()
         aes_key = bytes.fromhex(key.decode())
@@ -80,18 +80,20 @@ def get_key(key, RSA_Key):
 
 # Function to extract the video
 def extract(video_path, RSA_Key):
-    count = 15
+    v.get_frames(video_path)
+    count = int(decode_frame(os.path.join('./tmp', '0.png')).encode('latin-1'))
+    print(count)
     decoded = {}
     file = {}
     x=0
-    s = count
+    s = 1
     k = 0
     c = 0
     f_count = v.countFrames(video_path)
-    v.get_frames(video_path)
-    key=decodeVideo([i for i in range(0, count)])
+    key=decodeVideo([i for i in range(s, 5+s)])
     get_key(key, RSA_Key)
     
+    s+=5
     # working
     while(c<3 and s<f_count):
         if(v.is_hidden(s)):

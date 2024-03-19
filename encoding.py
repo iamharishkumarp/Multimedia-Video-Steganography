@@ -123,13 +123,12 @@ def encode(input_string, count, x, y):
     print("Complete!\n")    
 
 # Function to call the encryption functions
-def call_encrypt(video,l,Public_key):
+def call_encrypt(video,l,frame_count_for_files,Public_key):
     print("Generating new AES keys")
     k.call_aes_key()
     print("Encrypting the AES key with RSA public key")
     k.encrypt_key(Public_key)
     f_name=video
-    count,frame_count_for_files = v.get_video_info(f_name)
     v.get_frames(f_name)
     
     n=v.get_count("./Files")
@@ -138,17 +137,20 @@ def call_encrypt(video,l,Public_key):
     print("The files have been encrypted and saved in Encrypted folder")
     
     s=0
+    encode(str(frame_count_for_files),1,0,1)
+    s+=1
     
     with open(f"./Keys/encrypted_aes_key.enc", 'rb') as f:
         TEXT_TO_ENCODE = f.read().decode('latin-1')
-    encode(TEXT_TO_ENCODE,frame_count_for_files,s,frame_count_for_files)
+    encode(TEXT_TO_ENCODE,5,s,5+s)
+    s+=5
     s+=2
     for i in range(1,n+1):
-        # Read encrypted data from the file
+        # Read encrypted data from file
         with open(f'./Encrypted_Files/encrypted_{i-1}.enc', 'rb') as f:
             TEXT_TO_ENCODE = f.read().decode('latin-1')
         print(TEXT_TO_ENCODE[:7])
-        encode(TEXT_TO_ENCODE,frame_count_for_files,frame_count_for_files*(i)+s,frame_count_for_files*(i+1)+s)
+        encode(TEXT_TO_ENCODE,frame_count_for_files,frame_count_for_files*(i-1)+s,frame_count_for_files*(i)+s)
         s+=2
         
     v.new_video(f_name)
