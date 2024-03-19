@@ -7,7 +7,7 @@ import decoding as d
 def clean_tmp(path="./tmp"):
     if os.path.exists(path):
         shutil.rmtree(path)
-        print("[INFO] tmp files are cleaned up")
+        print("[INFO] tmp files are cleaned")
 
 # Count the number of frames in the video
 def countFrames(f_name):
@@ -26,7 +26,7 @@ def get_frames(f_name):
     for index, frame in enumerate(video_object.iter_frames()):
         img = Image.fromarray(frame, 'RGB')
         img.save(f'{temp_folder}{index}.png')
-    print("[INFO] All frames are extracted from video")
+    print("[INFO] All frames are extracted from the video")
     video_object.close()
 
 # Function to embed the hidden file into the video

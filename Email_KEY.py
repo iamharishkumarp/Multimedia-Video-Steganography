@@ -5,7 +5,7 @@ from email.mime.base import MIMEBase
 from email import encoders
 
 def send_email(email_to):
-    # Setup port number and server name
+    # Setup port number & server name
     smtp_port = 587                 # Standard secure SMTP port
     smtp_server = "smtp.gmail.com"  # Google SMTP Server
 
@@ -56,7 +56,6 @@ def send_email(email_to):
     print()
 
     # Send emails to the sender
-
     print(f"Sending email to: {email_to}...")
     TIE_server.sendmail(email_from, email_to, text)
     print(f"Email sent to: {email_to}")

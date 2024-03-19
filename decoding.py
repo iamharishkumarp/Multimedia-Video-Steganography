@@ -22,7 +22,7 @@ def decryption_process(encrypted_data, key, iv):
 # Function to decrypt the files using the AES key 
 def decrypt():
     
-    #Load AES key
+    #Load the AES key
     with open('./Retrived_Files/decrypted_aes_key.txt', 'rb') as f:
         key=f.read()
         aes_key = bytes.fromhex(key.decode())

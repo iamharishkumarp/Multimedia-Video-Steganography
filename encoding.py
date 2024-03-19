@@ -144,7 +144,7 @@ def call_encrypt(video,l,Public_key):
     encode(TEXT_TO_ENCODE,frame_count_for_files,s,frame_count_for_files)
     s+=2
     for i in range(1,n+1):
-        # Read encrypted data from file
+        # Read encrypted data from the file
         with open(f'./Encrypted_Files/encrypted_{i-1}.enc', 'rb') as f:
             TEXT_TO_ENCODE = f.read().decode('latin-1')
         print(TEXT_TO_ENCODE[:7])

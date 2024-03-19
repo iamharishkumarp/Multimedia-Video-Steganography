@@ -111,7 +111,7 @@ def generate_rsa_key():
         encoding=serialization.Encoding.PEM,
         format=serialization.PublicFormat.SubjectPublicKeyInfo
     )
-
+    # Creating Keys folder if not exist
     if not os.path.exists("./Keys"):
         os.makedirs("./Keys")
     file_obj1 = open("./Keys/RSA_public.pem", "wb")

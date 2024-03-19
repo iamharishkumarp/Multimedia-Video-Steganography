@@ -204,7 +204,7 @@ def downloadkey():
     return send_file('./Keys/RSA_private.pem', as_attachment=True)
 
 
-# Define route for About Us page
+# Define route for About us page
 @app.route('/about')
 def about():
     return render_template('about.html')
